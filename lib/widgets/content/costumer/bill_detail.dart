@@ -2,11 +2,9 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mostaza/backend/costumer.dart';
 import 'package:mostaza/constants/colors.dart';
 import 'package:mostaza/models/order.dart';
 import 'package:mostaza/widgets/components/button.dart';
-import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
 
 class BillDetail extends StatefulWidget {
   final Order order;

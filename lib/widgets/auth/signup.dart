@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mostaza/backend/auth.dart';
 import 'package:mostaza/constants/app_icons_icons.dart';
 import 'package:mostaza/constants/colors.dart';
+import 'package:mostaza/screens/content/costumer/container.dart';
 import 'package:mostaza/widgets/components/button.dart';
 import 'package:mostaza/widgets/components/header.dart';
 import 'package:mostaza/widgets/components/input.dart';
@@ -85,10 +87,26 @@ class _SignUpState extends State<SignUp> {
                             AnimatedSwitcher(
                               duration: const Duration(milliseconds: 750),
                               child: _switchStage(() {
-                                final snackBar =
-                                    SnackBar(content: Text('Validated!'));
-                                // Find the Scaffold in the widget tree and use it to show a SnackBar.
-                                Scaffold.of(context).showSnackBar(snackBar);
+                                signUp(
+                                        controllerEmail.text,
+                                        controllerPassword.text,
+                                        controllerName.text,
+                                        controllerId.text,
+                                        controllerAddress.text,
+                                        controllerPhone.text)
+                                    .then(
+                                  (user) {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            UserContainer(user: user),
+                                      ),
+                                    );
+                                  },
+                                ).catchError(
+                                  () {},
+                                );
                               }),
                             )
                           ],

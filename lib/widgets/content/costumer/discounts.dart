@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mostaza/backend/costumer.dart';
 import 'package:mostaza/constants/colors.dart';
-import 'package:mostaza/constants/menu_category.dart';
 import 'package:mostaza/models/discount.dart';
-import 'package:mostaza/models/dish.dart';
 import 'package:mostaza/models/user.dart';
 import 'package:mostaza/widgets/components/discount_item.dart';
-import 'package:mostaza/widgets/components/menu_item.dart';
 
 class Discounts extends StatefulWidget {
   final User user;

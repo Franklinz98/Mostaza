@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mostaza/backend/staff.dart';
 import 'package:mostaza/constants/colors.dart';
 import 'package:mostaza/models/user.dart';
@@ -17,7 +16,7 @@ class _OrderListState extends State<OrderList> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List>(
-      future: fetchOrders(widget.user.email),
+      future: fetchOrders(widget.user.uid),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasData) {

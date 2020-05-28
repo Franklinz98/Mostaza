@@ -8,10 +8,11 @@ import 'package:mostaza/models/product.dart';
 import 'package:mostaza/widgets/components/button.dart';
 
 class OrdersTile extends StatelessWidget {
-  Order order;
-  VoidCallback onRefreshState;
+  final Order order;
+  final VoidCallback onRefreshState;
 
-  OrdersTile({Key key, @required this.order, @required this.onRefreshState})
+  const OrdersTile(
+      {Key key, @required this.order, @required this.onRefreshState})
       : super(key: key);
 
   _showModalBottomSheet(context) {

@@ -37,7 +37,7 @@ Future<List> fetchMenu() async {
     }
     return _menu;
   } else if (response.statusCode == 401) {
-    Map<String, dynamic> body = json.decode(response.body)[0];
+    // Map<String, dynamic> body = json.decode(response.body)[0];
     return Future<List>.error('Unauthorized');
   } else {
     throw Exception('Failed to login User');
@@ -61,13 +61,15 @@ Future<List> fetchDiscounts(String email) async {
     Map<String, dynamic> body = json.decode(response.body);
     for (String key in body.keys) {
       var discountJson = body[key];
-      _discounts.add(
-        Discount.fromJson(key, discountJson),
-      );
+      if (key != "cuid") {
+        _discounts.add(
+          Discount.fromJson(key, discountJson),
+        );
+      }
     }
     return _discounts;
   } else if (response.statusCode == 401) {
-    Map<String, dynamic> body = json.decode(response.body)[0];
+    // Map<String, dynamic> body = json.decode(response.body)[0];
     return Future<List>.error('Unauthorized');
   } else {
     throw Exception('Failed to login User');
@@ -75,7 +77,7 @@ Future<List> fetchDiscounts(String email) async {
 }
 
 Future<List> fetchOrders(String uid) async {
-  Uri uri = Uri.https(baseUrl, 'ordenes/2020/5/99');
+  Uri uri = Uri.https(baseUrl, 'ordenes/2020/5/$uid');
   final http.Response response = await http.get(
     uri,
     headers: <String, String>{
@@ -93,7 +95,7 @@ Future<List> fetchOrders(String uid) async {
     }
     return _orders;
   } else if (response.statusCode == 401) {
-    Map<String, dynamic> body = json.decode(response.body)[0];
+    // Map<String, dynamic> body = json.decode(response.body)[0];
     return Future<List>.error('Unauthorized');
   } else {
     throw Exception('Failed to login User');

@@ -22,14 +22,14 @@ Future<List<Dish>> fetchMenu() async {
     }
     return _menu;
   } else if (response.statusCode == 401) {
-    Map<String, dynamic> body = json.decode(response.body)[0];
+    // Map<String, dynamic> body = json.decode(response.body)[0];
     return Future<List>.error('Unauthorized');
   } else {
     throw Exception('Failed to login User');
   }
 }
 
-Future<List> fetchDiscounts(String email) async {
+Future<List> fetchDiscount(String email, String code) async {
   var queryParameters = {
     'email': email,
     'aa': '2020',
@@ -42,17 +42,19 @@ Future<List> fetchDiscounts(String email) async {
     },
   );
   if (response.statusCode == 200) {
-    List<Discount> _discounts = [];
+    Discount discount;
     Map<String, dynamic> body = json.decode(response.body);
     for (String key in body.keys) {
-      var discountJson = body[key];
-      _discounts.add(
-        Discount.fromJson(key, discountJson),
-      );
+      if (key != "cuid") {
+        Discount _discount = Discount.fromJson(key, body[key]);
+        if (_discount.code == code) {
+          discount = _discount;
+        }
+      }
     }
-    return _discounts;
+    return [discount, body["cuid"]];
   } else if (response.statusCode == 401) {
-    Map<String, dynamic> body = json.decode(response.body)[0];
+    // Map<String, dynamic> body = json.decode(response.body)[0];
     return Future<List>.error('Unauthorized');
   } else {
     throw Exception('Failed to login User');
@@ -60,8 +62,7 @@ Future<List> fetchDiscounts(String email) async {
 }
 
 Future<List> fetchOrders(String uid) async {
-  Uri uri = Uri.https(baseUrl, 'ordenestemp/2020/5/28/88');
-  // Uri uri = Uri.https(baseUrl, 'ordenestemp/2020/5/28/$uid');
+  Uri uri = Uri.https(baseUrl, 'ordenestemp/2020/5/28/$uid');
   final http.Response response = await http.get(
     uri,
     headers: <String, String>{
@@ -79,7 +80,7 @@ Future<List> fetchOrders(String uid) async {
     }
     return _orders;
   } else if (response.statusCode == 401) {
-    Map<String, dynamic> body = json.decode(response.body)[0];
+    // Map<String, dynamic> body = json.decode(response.body)[0];
     return Future<List>.error('Unauthorized');
   } else {
     throw Exception('Failed to login User');
@@ -97,10 +98,44 @@ Future<bool> claimDiscount(String uid, Discount discount) async {
       'uid': uid,
       'bid': discount.key,
       'dct': discount.quantity,
+      'aa': '2020',
     }),
   );
   if (response.statusCode == 200) {
-    return json.decode(response.body)[0];
+    var body = json.decode(response.body)["valido"];
+    print(body);
+    return body;
+  } else if (response.statusCode == 401) {
+    Map<String, dynamic> body = json.decode(response.body)[0];
+    throw Exception(body['message']);
+  } else {
+    throw Exception('Failed to login User');
+  }
+}
+
+Future<bool> createOrder(String uid, Order order) async {
+  Uri uri = Uri.https(baseUrl, 'orden/crear');
+  final http.Response response = await http.post(
+    uri,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, dynamic>{
+      'total': order.total,
+      'idcliente': order.costumerUid,
+      'nfactura': order.number,
+      'descuento': order.discount,
+      'email': order.costumerEmail,
+      'iddoc': order.costumerId,
+      'idmesero': uid,
+      'nmesa': order.tableNumber,
+      'platos': order.dishesJson(),
+      'bonoid': order.discountId,
+    }),
+  );
+  if (response.statusCode == 200) {
+    var result = json.decode(response.body);
+    return result;
   } else if (response.statusCode == 401) {
     Map<String, dynamic> body = json.decode(response.body)[0];
     throw Exception(body['message']);
@@ -127,7 +162,7 @@ Future<bool> finishOrder(Order order) async {
   );
   if (response.statusCode == 200) {
     var result = json.decode(response.body);
-    return true;
+    return result;
   } else if (response.statusCode == 401) {
     Map<String, dynamic> body = json.decode(response.body)[0];
     throw Exception(body['message']);
@@ -152,10 +187,7 @@ Future<bool> cancelOrder(Order order) async {
   final response = await request.send();
   if (response.statusCode == 200) {
     var result = await response.stream.bytesToString();
-    return result == "true";
-  } else if (response.statusCode == 401) {
-    // Map<String, dynamic> body = json.decode(response.body)[0];
-    // throw Exception(body['message']);
+    return result == result;
   } else {
     throw Exception('Failed to login User');
   }

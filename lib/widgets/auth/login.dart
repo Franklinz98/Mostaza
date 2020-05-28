@@ -116,7 +116,6 @@ class Login extends StatelessWidget {
                                 color: AppColors.dixie,
                                 onPressed: () {
                                   if (_formKey.currentState.validate()) {
-                                    // TODO login stuff
                                     this._scaffoldKey.currentState.showSnackBar(
                                         SnackBar(
                                             content:
@@ -180,18 +179,6 @@ class Login extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              alignment: Alignment(0.0, 0.0),
-              child: LinkedText(
-                text: "¿Olvidaste tu contraseña?",
-                textStyle: GoogleFonts.montserrat(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 13,
-                    textStyle: TextStyle(color: AppColors.dixie)),
-                onTap: this.onForgottenShow,
               ),
             ),
           ],

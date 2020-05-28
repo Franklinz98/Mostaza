@@ -8,6 +8,7 @@ import 'package:mostaza/widgets/components/linked_text.dart';
 
 class StaffDrawer extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
+  final String username;
   final GestureTapCallback onTap1;
   final GestureTapCallback onTap2;
   final GestureTapCallback onTapSignOut;
@@ -15,6 +16,7 @@ class StaffDrawer extends StatelessWidget {
   const StaffDrawer({
     Key key,
     @required this.scaffoldKey,
+    @required this.username,
     @required this.onTap1,
     @required this.onTap2,
     @required this.onTapSignOut,
@@ -27,7 +29,7 @@ class StaffDrawer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Header(
-            title: 'Username',
+            title: this.username,
             icon: Icon(
               Icons.arrow_back,
               color: AppColors.dixie,

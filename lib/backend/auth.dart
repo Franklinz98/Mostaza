@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:mostaza/models/user.dart';
 
@@ -18,12 +17,14 @@ Future<User> login(String email, String password) async {
     }),
   );
   if (response.statusCode == 200) {
-    return User.fromJson(json.decode(response.body));
-  } else if (response.statusCode == 401) {
-    Map<String, dynamic> body = json.decode(response.body)[0];
-    throw Exception(body['message']);
+    User user = User.fromJson(json.decode(response.body));
+    if (user.uid != null) {
+      return user;
+    } else {
+      return Future<User>.error('Failed to login User');
+    }
   } else {
-    throw Exception('Failed to login User');
+    return Future<User>.error('Failed to login User');
   }
 }
 
@@ -32,6 +33,7 @@ Future<User> signUp(
   String email,
   String password,
   String name,
+  String doc,
   String address,
   String phone,
 ) async {
@@ -45,9 +47,9 @@ Future<User> signUp(
       'email': email,
       'password': password,
       'displayName': name,
-      'iddoc': name,
+      'iddoc': doc,
       'address': address,
-      'phoneNumber': phone,
+      'phoneNumber': '+57$phone',
     }),
   );
   if (response.statusCode == 200) {

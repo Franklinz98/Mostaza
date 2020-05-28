@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mostaza/constants/app_icons_icons.dart';
 import 'package:mostaza/constants/colors.dart';
 import 'package:mostaza/models/user.dart';
 import 'package:mostaza/screens/auth/auth_screen.dart';
-import 'package:mostaza/widgets/components/button.dart';
 import 'package:mostaza/widgets/components/header.dart';
-import 'package:mostaza/widgets/components/input.dart';
 import 'package:mostaza/widgets/content/staff/drawer.dart';
 import 'package:mostaza/widgets/content/staff/new_order.dart';
 import 'package:mostaza/widgets/content/staff/orders.dart';
@@ -26,7 +23,7 @@ class _StaffContainerState extends State<StaffContainer> {
   @override
   void initState() {
     super.initState();
-    _content = NewOrder();
+    _content = NewOrder(user: widget.user, scaffoldKey: widget._scaffoldKey);
   }
 
   @override
@@ -54,16 +51,20 @@ class _StaffContainerState extends State<StaffContainer> {
           ),
           drawer: StaffDrawer(
             scaffoldKey: widget._scaffoldKey,
+            username: widget.user.displayName,
             onTap1: () {
               widget._scaffoldKey.currentState.openEndDrawer();
               setState(() {
-                _content = NewOrder();
+                _content = NewOrder(
+                    user: widget.user, scaffoldKey: widget._scaffoldKey);
+                _title = 'NUEVA ORDEN';
               });
             },
             onTap2: () {
               widget._scaffoldKey.currentState.openEndDrawer();
               setState(() {
                 _content = OrderList(user: widget.user);
+                _title = 'ORDENES';
               });
             },
             onTapSignOut: () {

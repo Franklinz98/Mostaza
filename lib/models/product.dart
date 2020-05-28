@@ -2,15 +2,23 @@ import 'package:flutter/foundation.dart';
 
 class Product {
   final String name;
-  final String quantity;
+  String quantity;
   final String key;
   final String price;
 
-  const Product(
+  Product(
       {@required this.name,
       @required this.quantity,
       @required this.key,
       @required this.price});
+
+  void addUnit() {
+    quantity = (int.parse(quantity) + 1).toString();
+  }
+
+  void removeUnit() {
+    quantity = (int.parse(quantity) - 1).toString();
+  }
 
   factory Product.fromJson(String key, Map<String, dynamic> json) {
     return Product(

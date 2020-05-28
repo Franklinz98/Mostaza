@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:mostaza/models/dish.dart';
 import 'package:mostaza/models/product.dart';
 
 class Order {
@@ -9,7 +8,9 @@ class Order {
   final String billUri;
   String key;
   String tableNumber;
+  String costumerUid;
   String costumerId;
+  String discountId;
   String discount;
   String costumerEmail;
   List<Product> dishes;
@@ -21,17 +22,19 @@ class Order {
       this.key,
       this.date,
       this.tableNumber,
+      this.costumerUid,
       this.costumerId,
       this.costumerEmail,
       this.discount,
+      this.discountId,
       this.dishes});
 
   factory Order.fromCostumerJson(Map<String, dynamic> json) {
     String _date =
-        "${json["dia"]} de ${_getMonth(json["mes"])}, ${json["year"]}";
+        "${json["dia"]} de ${_getMonth(json["mes"])} ${json["year"]}";
     return Order(
       date: _date,
-      number: '00000000',
+      number: json['nfactura'],
       total: json['total'],
       billUri: json['URLfactura'] == null
           ? "https://res.cloudinary.com/lazarod/image/upload/v1590618741/hDoUHqDAxKwgt3XqBACQ.png"
@@ -47,14 +50,28 @@ class Order {
     }
     return Order(
       key: key,
-      number: '00000000',
+      number: json['nfactura'],
       total: json['total'],
       tableNumber: json['nmesa'],
-      costumerId: /* json['clienteDoc'] */ '123456789',
-      costumerEmail: /* json['clienteEmail'] */ 'a@a.com',
-      discount: /* json['descTotal'] */ '3500',
+      costumerUid: json['idcliente'],
+      costumerId: json['iddoc'],
+      costumerEmail: json['email'],
+      discount: json['descuento'],
       dishes: _items,
     );
+  }
+
+  Map<String, Map<String, String>> dishesJson() {
+    final Map<String, Map<String, String>> dishesMap = {};
+    for (Product product in dishes) {
+      final Map<String, String> dishMap = <String, String>{
+        'precio': product.price,
+        'name': product.name,
+        'cntd': product.quantity,
+      };
+      dishesMap[product.key] = dishMap;
+    }
+    return dishesMap;
   }
 }
 

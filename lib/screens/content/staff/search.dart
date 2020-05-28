@@ -1,11 +1,10 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mostaza/backend/staff.dart';
 import 'package:mostaza/constants/app_icons_icons.dart';
 import 'package:mostaza/constants/colors.dart';
 import 'package:mostaza/models/dish.dart';
+import 'package:mostaza/models/product.dart';
 import 'package:mostaza/widgets/components/header.dart';
 import 'package:mostaza/widgets/components/input.dart';
 
@@ -98,7 +97,15 @@ class _SearchMenuState extends State<SearchMenu> {
                             fontSize: 14,
                           ),
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pop(
+                              context,
+                              Product(
+                                  name: dish.name,
+                                  quantity: 1.toString(),
+                                  key: dish.key,
+                                  price: dish.price));
+                        },
                       ),
                     ),
                   );

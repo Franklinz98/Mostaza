@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:mostaza/backend/costumer.dart';
 import 'package:mostaza/constants/colors.dart';
 import 'package:mostaza/constants/menu_category.dart';
 import 'package:mostaza/models/user.dart';
@@ -11,7 +8,6 @@ import 'package:mostaza/widgets/content/costumer/discounts.dart';
 import 'package:mostaza/widgets/content/costumer/drawer.dart';
 import 'package:mostaza/widgets/components/header.dart';
 import 'package:mostaza/widgets/content/costumer/explore.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class UserContainer extends StatefulWidget {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -51,73 +47,52 @@ class _UserContainerState extends State<UserContainer> {
                 }),
             Expanded(
               child: _content,
-              /* ListView(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12.0),
-                    child: Text(
-                      "Reciente",
-                      style: GoogleFonts.montserrat(
-                          fontWeight: FontWeight.w600, fontSize: 14),
-                    ),
-                  ),
-                  lastItem(
-                      'https://images.pexels.com/photos/1624487/pexels-photo-1624487.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
-                      "Ejecutivo de Pollo",
-                      "Almuerzo ejecutivo con pollo asado, arroz ranchero, ensalada, granos del día y jugo del día.",
-                      "3 de Abril, 2020",
-                      "\$ 10.900"),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12.0),
-                    child: Text(
-                      "Destacados",
-                      style: GoogleFonts.montserrat(
-                          fontWeight: FontWeight.w600, fontSize: 14),
-                    ),
-                  ),
-                ],
-              ), */
             ),
           ],
         ),
         drawer: CostumerDrawer(
           scaffoldKey: widget._scaffoldKey,
+          username: widget.user.displayName,
           onTap1: () {
             widget._scaffoldKey.currentState.openEndDrawer();
             setState(() {
               _content = MenuExplore(category: MenuCategory.breakfast);
+              _title = 'EXPLORAR';
             });
           },
           onTap2: () {
             widget._scaffoldKey.currentState.openEndDrawer();
             setState(() {
               _content = MenuExplore(category: MenuCategory.lunch);
+              _title = 'EXPLORAR';
             });
           },
           onTap3: () {
             widget._scaffoldKey.currentState.openEndDrawer();
             setState(() {
               _content = MenuExplore(category: MenuCategory.dinner);
+              _title = 'EXPLORAR';
             });
           },
           onTap4: () {
             widget._scaffoldKey.currentState.openEndDrawer();
             setState(() {
               _content = MenuExplore(category: MenuCategory.other);
+              _title = 'EXPLORAR';
             });
           },
           onTap5: () {
             widget._scaffoldKey.currentState.openEndDrawer();
             setState(() {
               _content = Discounts(user: widget.user);
+              _title = 'DESCUENTOS';
             });
           },
           onTap6: () {
             widget._scaffoldKey.currentState.openEndDrawer();
             setState(() {
               _content = Bills(user: widget.user);
+              _title = 'FACTURAS';
             });
           },
           onTapSignOut: () {

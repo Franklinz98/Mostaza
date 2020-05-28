@@ -8,6 +8,7 @@ import 'package:mostaza/widgets/components/linked_text.dart';
 
 class CostumerDrawer extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
+  final String username;
   final GestureTapCallback onTap1;
   final GestureTapCallback onTap2;
   final GestureTapCallback onTap3;
@@ -19,6 +20,7 @@ class CostumerDrawer extends StatelessWidget {
   const CostumerDrawer({
     Key key,
     @required this.scaffoldKey,
+    @required this.username,
     @required this.onTap1,
     @required this.onTap2,
     @required this.onTap3,
@@ -35,7 +37,7 @@ class CostumerDrawer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Header(
-            title: 'Username',
+            title: this.username,
             icon: Icon(
               Icons.arrow_back,
               color: AppColors.dixie,
@@ -56,11 +58,13 @@ class CostumerDrawer extends StatelessWidget {
                   )),
             ),
           ),
-          DrawerTile(icon: AppIcons.breakfast, title: "Desayuno", onTap: onTap1),
+          DrawerTile(
+              icon: AppIcons.breakfast, title: "Desayuno", onTap: onTap1),
           DrawerTile(icon: AppIcons.lunch, title: "Almuerzo", onTap: onTap2),
           DrawerTile(icon: AppIcons.dinner, title: "Cena", onTap: onTap3),
           DrawerTile(icon: AppIcons.dessert, title: "Otro", onTap: onTap4),
-          DrawerTile(icon: AppIcons.price_tag, title: "Descuentos", onTap: onTap5),
+          DrawerTile(
+              icon: AppIcons.price_tag, title: "Descuentos", onTap: onTap5),
           DrawerTile(icon: AppIcons.bill, title: "Facturas", onTap: onTap6),
           Expanded(
             child: Padding(

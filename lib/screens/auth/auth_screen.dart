@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mostaza/widgets/auth/forgotten_password.dart';
 import 'package:mostaza/widgets/auth/landing_page.dart';
 import 'package:mostaza/widgets/auth/login.dart';
 import 'package:mostaza/widgets/auth/signup.dart';
@@ -36,13 +35,6 @@ class _AuthState extends State<Auth> {
               _updateView(1, 0);
             },
           );
-          break;
-        case 3:
-          content = Forgotten(
-              type: type,
-              onBackPressed: () {
-                _updateView(1, type);
-              });
           break;
         default:
           content = LandingPage(
