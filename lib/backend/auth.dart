@@ -55,8 +55,8 @@ Future<User> signUp(
   if (response.statusCode == 200) {
     return User.fromJson(json.decode(response.body));
   } else if (response.statusCode == 409) {
-    throw Exception(response.body);
+    return Future<User>.error("Failed to signup user");
   } else {
-    throw Exception('Failed to register user');
+    return Future<User>.error("Failed to signup user");
   }
 }

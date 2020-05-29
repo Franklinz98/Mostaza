@@ -21,7 +21,6 @@ class NewOrder extends StatefulWidget {
   final controllerTable = TextEditingController();
   final controllerDiscount = TextEditingController();
   final List<Product> products = [];
-  int _total;
   final User user;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
@@ -32,11 +31,13 @@ class NewOrder extends StatefulWidget {
 }
 
 class _NewOrderState extends State<NewOrder> {
+  int _total;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    widget._total = 0;
+    _total = 0;
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -62,15 +63,15 @@ class _NewOrderState extends State<NewOrder> {
                           if (product.quantity == '0') {
                             widget.products.remove(product);
                           }
-                          widget._total =
-                              widget._total - int.parse(product.price);
+                          _total =
+                              _total - int.parse(product.price);
                         });
                       },
                       onPlusPressed: () {
                         setState(() {
                           product.addUnit();
-                          widget._total =
-                              widget._total + int.parse(product.price);
+                          _total =
+                              _total + int.parse(product.price);
                         });
                       });
                 } else {
@@ -225,6 +226,7 @@ class _NewOrderState extends State<NewOrder> {
             height: 16.0,
           ),
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
                 "Platos",
@@ -243,7 +245,7 @@ class _NewOrderState extends State<NewOrder> {
                 width: 5,
               ),
               Text(
-                Formatter.currency.format(widget._total),
+                Formatter.currency.format(_total),
                 style: GoogleFonts.openSans(
                   fontWeight: FontWeight.w300,
                   fontSize: 12,
@@ -267,7 +269,7 @@ class _NewOrderState extends State<NewOrder> {
     if (result != null) {
       setState(() {
         widget.products.add(result);
-        widget._total = widget._total + int.parse(result.price);
+        _total = _total + int.parse(result.price);
       });
     }
   }
@@ -279,7 +281,7 @@ class _NewOrderState extends State<NewOrder> {
     widget.controllerEmail.clear();
     setState(() {
       widget.products.clear();
-      widget._total = 0;
+      _total = 0;
     });
   }
 
@@ -299,11 +301,11 @@ class _NewOrderState extends State<NewOrder> {
             String orderDiscount;
             String orderDiscountKey;
             if (valid) {
-              orderTotal = widget._total - int.parse(_discount.quantity);
+              orderTotal = _total - int.parse(_discount.quantity);
               orderDiscount = _discount.quantity;
               orderDiscountKey = _discount.key;
             } else {
-              orderTotal = widget._total;
+              orderTotal = _total;
               orderDiscount = "0";
               orderDiscountKey = "NA";
             }

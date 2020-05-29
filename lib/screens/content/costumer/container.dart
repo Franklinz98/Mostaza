@@ -84,14 +84,14 @@ class _UserContainerState extends State<UserContainer> {
           onTap5: () {
             widget._scaffoldKey.currentState.openEndDrawer();
             setState(() {
-              _content = Discounts(user: widget.user);
+              _content = Discounts(key: UniqueKey(),user: widget.user);
               _title = 'DESCUENTOS';
             });
           },
           onTap6: () {
             widget._scaffoldKey.currentState.openEndDrawer();
             setState(() {
-              _content = Bills(user: widget.user);
+              _content = Bills(key: UniqueKey(),user: widget.user);
               _title = 'FACTURAS';
             });
           },

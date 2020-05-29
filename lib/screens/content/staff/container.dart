@@ -56,14 +56,16 @@ class _StaffContainerState extends State<StaffContainer> {
               widget._scaffoldKey.currentState.openEndDrawer();
               setState(() {
                 _content = NewOrder(
-                    user: widget.user, scaffoldKey: widget._scaffoldKey);
+                    key: UniqueKey(),
+                    user: widget.user,
+                    scaffoldKey: widget._scaffoldKey);
                 _title = 'NUEVA ORDEN';
               });
             },
             onTap2: () {
               widget._scaffoldKey.currentState.openEndDrawer();
               setState(() {
-                _content = OrderList(user: widget.user);
+                _content = OrderList(key: UniqueKey(), user: widget.user);
                 _title = 'ORDENES';
               });
             },

@@ -99,6 +99,16 @@ class StaffDrawer extends StatelessWidget {
                       },
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4.0),
+                    child: Text(
+                      "Icons by Icons8.com",
+                      style: GoogleFonts.openSans(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 12,
+                          textStyle: TextStyle(color: AppColors.dusty_gray)),
+                    ),
+                  ),
                 ],
               ),
             ),

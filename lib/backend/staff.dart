@@ -21,9 +21,6 @@ Future<List<Dish>> fetchMenu() async {
       );
     }
     return _menu;
-  } else if (response.statusCode == 401) {
-    // Map<String, dynamic> body = json.decode(response.body)[0];
-    return Future<List>.error('Unauthorized');
   } else {
     throw Exception('Failed to login User');
   }
@@ -62,7 +59,7 @@ Future<List> fetchDiscount(String email, String code) async {
 }
 
 Future<List> fetchOrders(String uid) async {
-  Uri uri = Uri.https(baseUrl, 'ordenestemp/2020/5/28/$uid');
+  Uri uri = Uri.https(baseUrl, 'ordenestemp/2020/5/29/$uid');
   final http.Response response = await http.get(
     uri,
     headers: <String, String>{
