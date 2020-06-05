@@ -63,15 +63,13 @@ class _NewOrderState extends State<NewOrder> {
                           if (product.quantity == '0') {
                             widget.products.remove(product);
                           }
-                          _total =
-                              _total - int.parse(product.price);
+                          _total = _total - int.parse(product.price);
                         });
                       },
                       onPlusPressed: () {
                         setState(() {
                           product.addUnit();
-                          _total =
-                              _total + int.parse(product.price);
+                          _total = _total + int.parse(product.price);
                         });
                       });
                 } else {
@@ -118,7 +116,7 @@ class _NewOrderState extends State<NewOrder> {
                     color: AppColors.dixie,
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        _createOrder();
+                        _onCreateOrder();
                       }
                     },
                     child: Text(
@@ -285,9 +283,7 @@ class _NewOrderState extends State<NewOrder> {
     });
   }
 
-  _createOrder() {
-    print(widget.user.uid);
-
+  _onCreateOrder() {
     fetchDiscount(
       widget.controllerEmail.text,
       widget.controllerDiscount.text,
@@ -295,52 +291,55 @@ class _NewOrderState extends State<NewOrder> {
       (discount) {
         Discount _discount = discount[0];
         String cuid = discount[1];
-        claimDiscount(cuid, _discount).then(
-          (valid) {
-            int orderTotal;
-            String orderDiscount;
-            String orderDiscountKey;
-            if (valid) {
-              orderTotal = _total - int.parse(_discount.quantity);
-              orderDiscount = _discount.quantity;
-              orderDiscountKey = _discount.key;
-            } else {
-              orderTotal = _total;
-              orderDiscount = "0";
-              orderDiscountKey = "NA";
-            }
-            Order order = Order(
-              number: Random().nextInt(99999999).toString().padLeft(8, '0'),
-              total: orderTotal.toString(),
-              costumerUid: cuid,
-              discount: orderDiscount,
-              costumerEmail: widget.controllerEmail.text,
-              costumerId: widget.controllerId.text,
-              tableNumber: widget.controllerTable.text,
-              dishes: List.from(widget.products),
-              discountId: orderDiscountKey,
-            );
-            print(widget.user.uid);
+        if (_discount != null) {
+          claimDiscount(cuid, _discount).then(
+            (valid) {
+              if (valid) {
+                _createOrder(
+                    (_total - int.parse(_discount.quantity)).toString(),
+                    cuid,
+                    _discount.quantity,
+                    _discount.key);
+              } else {
+                _createOrder(_total.toString(), cuid, "0", "NA");
+              }
+            },
+          ).catchError(
+            (error) {},
+          );
+        } else {
+          _createOrder(_total.toString(), cuid, "0", "NA");
+        }
+      },
+    ).catchError(
+      (error) {},
+    );
+  }
 
-            createOrder(widget.user.uid, order).then(
-              (created) {
-                if (created) {
-                  _clearForm();
-                } else {
-                  widget.scaffoldKey.currentState.showSnackBar(
-                    SnackBar(
-                      content: Text('No se creo la orden'),
-                    ),
-                  );
-                }
-              },
-            ).catchError(
-              (error) {},
-            );
-          },
-        ).catchError(
-          (error) {},
-        );
+  _createOrder(String orderTotal, String cuid, String orderDiscount,
+      String orderDiscountKey) {
+    Order order = Order(
+      number: Random().nextInt(99999999).toString().padLeft(8, '0'),
+      total: orderTotal,
+      costumerUid: cuid,
+      discount: orderDiscount,
+      costumerEmail: widget.controllerEmail.text,
+      costumerId: widget.controllerId.text,
+      tableNumber: widget.controllerTable.text,
+      dishes: List.from(widget.products),
+      discountId: orderDiscountKey,
+    );
+    createOrder(widget.user.uid, order).then(
+      (created) {
+        if (created) {
+          _clearForm();
+        } else {
+          widget.scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text('No se creo la orden'),
+            ),
+          );
+        }
       },
     ).catchError(
       (error) {},

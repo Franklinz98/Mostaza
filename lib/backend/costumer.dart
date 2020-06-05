@@ -77,7 +77,8 @@ Future<List> fetchDiscounts(String email) async {
 }
 
 Future<List> fetchOrders(String uid) async {
-  Uri uri = Uri.https(baseUrl, 'ordenes/2020/5/$uid');
+  var date = DateTime.now();
+  Uri uri = Uri.https(baseUrl, 'ordenes/2020/${date.month}/$uid');
   final http.Response response = await http.get(
     uri,
     headers: <String, String>{

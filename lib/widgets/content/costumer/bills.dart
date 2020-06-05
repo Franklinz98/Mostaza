@@ -94,18 +94,41 @@ class _BillsState extends State<Bills> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasData) {
-            return ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              itemBuilder: (_, index) {
-                return BillTile(
-                  order: snapshot.data[index],
-                  onTap: () {
-                    _updateView(1, snapshot.data[index]);
-                  },
-                );
-              },
-              itemCount: snapshot.data.length,
-            );
+            return snapshot.data.isEmpty
+                ? Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Image.asset(
+                          'assets/images/empty_bills.png',
+                          height: 120,
+                          width: 120,
+                        ),
+                        Text(
+                          "No hay registro de pedidos...",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.montserrat(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    itemBuilder: (_, index) {
+                      return BillTile(
+                        order: snapshot.data[index],
+                        onTap: () {
+                          _updateView(1, snapshot.data[index]);
+                        },
+                      );
+                    },
+                    itemCount: snapshot.data.length,
+                  );
           } else if (snapshot.hasError) {
             return Container(
               color: Colors.red,

@@ -59,7 +59,9 @@ Future<List> fetchDiscount(String email, String code) async {
 }
 
 Future<List> fetchOrders(String uid) async {
-  Uri uri = Uri.https(baseUrl, 'ordenestemp/2020/5/29/$uid');
+  var date = DateTime.now();
+  Uri uri =
+      Uri.https(baseUrl, 'ordenestemp/2020/${date.month}/${date.day}/$uid');
   final http.Response response = await http.get(
     uri,
     headers: <String, String>{
@@ -142,6 +144,7 @@ Future<bool> createOrder(String uid, Order order) async {
 }
 
 Future<bool> finishOrder(Order order) async {
+  var date = DateTime.now();
   Uri uri = Uri.https(baseUrl, 'orden/finalizar');
   final http.Response response = await http.post(
     uri,
@@ -151,7 +154,7 @@ Future<bool> finishOrder(Order order) async {
     body: jsonEncode(<String, String>{
       'idorden': order.key,
       'year': "2020",
-      'mes': "5",
+      'mes': date.month.toString(),
       'cemail': order.costumerEmail,
       'cancelo': order.total,
       'cambio': "0",
@@ -169,6 +172,7 @@ Future<bool> finishOrder(Order order) async {
 }
 
 Future<bool> cancelOrder(Order order) async {
+  var date = DateTime.now();
   Uri uri = Uri.https(baseUrl, 'orden/eliminar');
   final request = http.Request("DELETE", uri);
   request.headers.addAll(
@@ -179,7 +183,7 @@ Future<bool> cancelOrder(Order order) async {
   request.body = jsonEncode(<String, String>{
     'idorden': order.key,
     'year': "2020",
-    'mes': "5",
+    'mes': date.month.toString(),
   });
   final response = await request.send();
   if (response.statusCode == 200) {
